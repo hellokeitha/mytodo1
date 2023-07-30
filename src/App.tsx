@@ -1,20 +1,40 @@
-import React, { FormEvent, useState } from "react";
+// src/App.tsx
+import React, { FormEvent, useState, useEffect, useContext } from "react";
+import DarkModeToggle from "./components/DarkModeToggle";
+import styled from "styled-components";
+import { ThemeContext } from "./components/ThemeProvider";
 import shortId from "shortid";
 import useInput from "./hooks/useInput";
 import TodoList from "./components/TodoList";
 
-type Todo = {
-  id: string;
-  title: string;
-  content: string;
-  important: number;
-  dueDate: number;
-  createdAt: number;
-  isCompleted: boolean;
-  isDeleted: boolean;
-};
+const App: React.FC = () => {
+  // Dark Mode
+  const { darkMode, toggleDarkMode } = useContext(ThemeContext);
 
-const App = () => {
+  useEffect(() => {
+    const isDarkModePreferred = localStorage.getItem("darkMode") === "true";
+    if (isDarkModePreferred) {
+      toggleDarkMode();
+    }
+  }, [toggleDarkMode]);
+
+  useEffect(() => {
+    localStorage.setItem("darkMode", JSON.stringify(darkMode));
+  }, [darkMode]);
+
+  // Todo
+  type Todo = {
+    id: string;
+    title: string;
+    content: string;
+    important: number;
+    dueDate: number;
+    createdAt: number;
+    isCompleted: boolean;
+    isDeleted: boolean;
+  };
+
+  // custom hook
   const [title, onChangeTitleHandler] = useInput();
   const [content, onChangeContentHandler] = useInput();
 
@@ -77,8 +97,9 @@ const App = () => {
   };
 
   return (
-    <>
-      <header>My Own Todo List</header>
+    <Container>
+      <h1>My Own Todo List</h1>
+      <DarkModeToggle />
       <div>
         <form onSubmit={addTodo}>
           <input
@@ -108,8 +129,19 @@ const App = () => {
         handleDoneButtonClick={handleDoneButtonClick}
         handleDeleteButtonClick={handleDeleteButtonClick}
       ></TodoList>
-    </>
+      {/* </ThemeProvider> */}
+    </Container>
   );
 };
 
 export default App;
+
+const Container = styled.div`
+  background-color: ${(props) => props.theme.colors.background};
+  color: ${(props) => props.theme.colors.text};
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`;

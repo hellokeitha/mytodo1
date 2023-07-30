@@ -39,7 +39,7 @@ const TodoList: React.FC<TodoListProps> = ({
                 <p>is Completed: {todo.isCompleted.toString()}</p>
                 <p>is Done: {todo.isDeleted.toString()}</p>
                 <button onClick={() => handleDoneButtonClick(todo.id)}>
-                  DONE
+                  {todo.isCompleted ? "CANCEL" : "DONE"}
                 </button>
                 <button onClick={() => handleDeleteButtonClick(todo.id)}>
                   DELETE
