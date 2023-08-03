@@ -35,8 +35,8 @@ const App: React.FC = () => {
   };
 
   // custom hook
-  const [title, onChangeTitleHandler] = useInput();
-  const [content, onChangeContentHandler] = useInput();
+  const [title, onChangeTitleHandler, setTitle] = useInput();
+  const [content, onChangeContentHandler, setContent] = useInput();
 
   // 타입이 지정된 배열 상태와 초기값
   const [todos, setTodos] = useState<Todo[]>([
@@ -77,6 +77,8 @@ const App: React.FC = () => {
     };
 
     setTodos([...todos, newTodo]);
+    setTitle("");
+    setContent("");
   };
 
   // DONE 버튼 클릭 핸들러
